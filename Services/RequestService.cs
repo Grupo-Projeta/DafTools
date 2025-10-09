@@ -1,7 +1,10 @@
 ﻿using System.IO;
+using System.IO.Pipes;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using DafTools.Model;
 using DafTools.Utils;
 
@@ -9,7 +12,7 @@ namespace DafTools.Services
 {
     public class RequestService
     {
-        public async Task RequestDafs()
+        public async Task RequestDafsData()
         {
             PathUtils pathUtils = new PathUtils();
 
@@ -30,14 +33,14 @@ namespace DafTools.Services
             DateTime hoje = DateTime.Today;
 
             var citiesDialog = new CitiesService();
-            var citiesWithCode = citiesDialog.LoadCities();
+            var citiesInfo = citiesDialog.LoadCities();
 
-            if (citiesWithCode == null)
+            if (citiesInfo == null)
                 return;
 
-            foreach (var cityWithCode in citiesWithCode)
+            foreach (var cityInfo in citiesInfo)
             {
-                string cityFolder = Path.Combine(targetPath, cityWithCode.Key.Replace(" ", "_"));
+                string cityFolder = Path.Combine(targetPath, cityInfo.Name.Replace(" ", "_"));
                 Directory.CreateDirectory(cityFolder);
 
                 for (DateTime data = inicio; data <= hoje; data = data.AddMonths(1))
@@ -49,7 +52,7 @@ namespace DafTools.Services
 
                     var payload = new
                     {
-                        codigoBeneficiario = cityWithCode.Value,
+                        codigoBeneficiario = cityInfo.DafCode,
                         codigoFundo = 0,
                         dataInicio = data.ToString("dd.MM.yyyy"),
                         dataFim = dataFim.ToString("dd.MM.yyyy")
@@ -68,22 +71,102 @@ namespace DafTools.Services
                         var options = new JsonSerializerOptions { WriteIndented = true };
                         string jsonFormatado = JsonSerializer.Serialize(doc, options);
 
-                        string arquivo = Path.Combine(cityFolder, $"{ano}-{mes:D2}.json");
-                        await File.WriteAllTextAsync(arquivo, jsonFormatado, Encoding.UTF8);
+                        string file = Path.Combine(cityFolder, $"{ano}-{mes:D2}.json");
+                        await File.WriteAllTextAsync(file, jsonFormatado, Encoding.UTF8);
 
-                        Console.WriteLine($"{cityWithCode.Key} {ano}-{mes:D2} salvo.");
+                        Console.WriteLine($"{cityInfo.Name} ({cityInfo.Uf}) {ano}-{mes:D2} salvo.");
                     }
-
-
                 }
             }
 
             Console.WriteLine("Download concluído!");
         }
 
-        public async Task<CityCodeResult?> RequestCityCode(string cityName)
+
+        public async Task RequestPibData()
         {
-            IList<CityCodeResult> returnedCities = new List<CityCodeResult>();
+            var citiesDialog = new CitiesService();
+            var citiesInfo = citiesDialog.LoadCities();
+
+            string url = "https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9088-produto-interno-bruto-dos-municipios.html?t=pib-por-municipio&c=";
+            using HttpClient httpClient = new HttpClient();
+
+            // Dicionário principal da cidade
+            
+            var finalJson = new Dictionary<string, object>();
+
+            foreach (var cityInfo in citiesInfo)
+            {
+                var cityData = new Dictionary<string, Dictionary<string, string>>();
+
+                var response = await httpClient.GetAsync(url + cityInfo.PibCode);
+
+                if (!response.IsSuccessStatusCode)
+                    return;
+
+                string html = await response.Content.ReadAsStringAsync();
+
+                var pattern = @"<p class=['""]ind-label['""]>(.*?)<\/p>\s*<p class=['""]ind-value['""]>(.*?)<\/p>";
+                var matches = Regex.Matches(html, pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+                foreach (Match match in matches)
+                {
+                    string label = WebUtility.HtmlDecode(match.Groups[1].Value.Trim());
+                    string value = WebUtility.HtmlDecode(match.Groups[2].Value);
+                    value = Regex.Replace(value, "<.*?>", "").Trim();
+
+                    // Extrair o ano (padrão [2021])
+                    var yearMatch = Regex.Match(value, @"\[(\d{4})\]");
+                    string year = yearMatch.Success ? yearMatch.Groups[1].Value : "desconhecido";
+
+                    // Mover o (×1000) do valor para o label
+                    var multiplierMatch = Regex.Match(value, @"\(×1000\)");
+                    if (multiplierMatch.Success)
+                    {
+                        label = $"{label} (×1000)";
+                        value = value.Replace("(×1000)", "").Trim();
+                    }
+
+                    // Limpar o valor de símbolos e lixo HTML
+                    value = value
+                        .Replace("R$", "")
+                        .Trim();
+
+                    // Remover o [2021] do valor
+                    value = Regex.Replace(value, @"\[\d{4}\]", "").Trim();
+
+                    // Se o ano ainda não existe no dicionário, cria
+                    if (!cityData.ContainsKey(year))
+                        cityData[year] = new Dictionary<string, string>();
+
+                    // Adiciona o indicador e seu valor
+                    cityData[year][label] = value;
+                }
+
+                finalJson.Add(cityInfo.Name, cityData);
+
+                Console.WriteLine($"{cityInfo.Name} ({cityInfo.Uf}) Analisada");
+            }
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            string json = JsonSerializer.Serialize(finalJson, options);
+
+            // Salvar em arquivo
+            string path = "indicaroes_pib.json";
+            await File.WriteAllTextAsync(path, json, Encoding.UTF8);
+
+            Console.WriteLine("Indicadores salvos com sucesso");
+        }
+
+
+        public async Task<CityInfoResult?> RequestCityDafCode(string cityName)
+        {
+            IList<CityInfoResult> returnedCities = new List<CityInfoResult>();
 
             string url = "https://demonstrativos.api.daf.bb.com.br/v1/demonstrativo/daf/beneficiario";
 
@@ -108,9 +191,9 @@ namespace DafTools.Services
                 {
                     string name = contentItem.GetProperty("nomeBeneficiarioSaida").GetString() ?? string.Empty;
                     string uf = contentItem.GetProperty("siglaUnidadeFederacaoSaida").GetString() ?? string.Empty;
-                    int code = contentItem.GetProperty("codigoBeneficiarioSaida").GetInt32();
+                    int dafCode = contentItem.GetProperty("codigoBeneficiarioSaida").GetInt32();
 
-                    returnedCities.Add(new CityCodeResult(name.ToLower(), uf.ToUpper(), code));
+                    returnedCities.Add(new CityInfoResult(name.ToLower(), uf.ToUpper(), dafCode, 0000));
                 }
 
                 int maxTentativas = 5;
@@ -154,7 +237,7 @@ namespace DafTools.Services
 
                     else
                     {
-                        
+
                         Console.WriteLine("Opção Invalida");
                         await Task.Delay(1000);
                     }
@@ -165,5 +248,7 @@ namespace DafTools.Services
             await Task.Delay(1000);
             return null;
         }
+
+
     }
 }

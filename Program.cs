@@ -26,9 +26,15 @@ namespace DafTools
                 Console.WriteLine();
                 Console.WriteLine("0 - Sair");
                 Console.WriteLine("1 - Baixar DAF mensal de todas as cidades (2023 à 2025)");
-                Console.WriteLine("2 - Converter todas as DAFS Para CSV único");
-                Console.WriteLine("3 - Adicionar Municipio à base interna");
-                Console.WriteLine("4 - Listar Municipios da base interna");
+                Console.WriteLine("2 - Exportar todas as DAFS Para CSV consolidado");
+                Console.WriteLine("-------------------------------------");
+                Console.WriteLine("3 - Baixar dados do pib");
+                Console.WriteLine("4 - Exportar todos os Pibs para CSV consolidado");
+                Console.WriteLine("-------------------------------------");
+                Console.WriteLine("5 - Adicionar Municipio à base interna");
+                Console.WriteLine("6 - Listar Municipios da base interna");
+
+                Console.WriteLine("7 - TESTE");
 
                 Console.WriteLine();
                 Console.Write("Digite uma opção: ");
@@ -45,17 +51,31 @@ namespace DafTools
 
                     switch (option)
                     {
-                        case 0: _isRunning = false; break;
+                        case 0: _isRunning = false; 
+                                break;
 
-                        case 1:
-                            _requestService.RequestDafs().GetAwaiter().GetResult(); break;
+                        case 1: _requestService.RequestDafsData().GetAwaiter().GetResult(); 
+                                break;
 
-                        case 2:
-                            _exportService.ExportCsv(); break;
+                        case 2: _exportService.ExportDafsCsv(); 
+                                break;
 
-                        case 3: AddNewCityToDataBase().GetAwaiter().GetResult(); break;
 
-                        case 4: _citiesService.ListAllCities(); break;
+                        case 3: _requestService.RequestPibData().GetAwaiter().GetResult(); 
+                                break;
+
+                        case 4: _exportService.ExportPibsCsv();
+                                break;
+
+
+                        case 5: AddNewCityToDataBase().GetAwaiter().GetResult();
+                                break;
+
+                        case 6: _citiesService.ListAllCities();
+                                break;
+
+                        case 7: _citiesService.Teste();
+                                break;
                      }
                     
                     Task.Delay(1000).Wait();
@@ -78,7 +98,7 @@ namespace DafTools
 
             if (string.IsNullOrEmpty(inputName)) return;
 
-            CityCodeResult? requestResult = await _requestService.RequestCityCode(inputName);
+            CityInfoResult? requestResult = await _requestService.RequestCityDafCode(inputName);
 
             if (requestResult == null) return;
 

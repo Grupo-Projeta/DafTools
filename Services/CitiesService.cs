@@ -1,24 +1,33 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using DafTools.Model;
 
 internal class CitiesService
 {
     private readonly string _filePath = "Resources/municipios.json";
 
-    public Dictionary<string, int> CitiesWithCode { get; private set; } = new();
+    public IList<CityInfoResult> CitiesInfo { get; private set; } = new List<CityInfoResult>();
 
-    public Dictionary<string, int>? LoadCities()
+    public IList<CityInfoResult>? LoadCities()
     {
         if (!File.Exists(_filePath))
             return null;
 
 
         string json = File.ReadAllText(_filePath);
-        CitiesWithCode = JsonSerializer.Deserialize<Dictionary<string, int>>(json)
-                               ?? new Dictionary<string, int>();
 
-        return CitiesWithCode;
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+
+        CitiesInfo = JsonSerializer.Deserialize<List<CityInfoResult>>(json, options);
+
+        return CitiesInfo;
     }
 
     public void ListAllCities()
@@ -35,9 +44,13 @@ internal class CitiesService
             return;
         }
 
+        int count = 0;
+
         foreach(var city in cities)
         {
-            Console.WriteLine($"{city.Key} - {city.Value}");
+            Console.WriteLine($"{count} - {city.Name} ({city.Uf})");
+
+            count++;
             Task.Delay(10).Wait();
         }
         Console.WriteLine();
@@ -48,10 +61,10 @@ internal class CitiesService
 
     public void SaveCitiesFile()
     {
-        if (CitiesWithCode == null || CitiesWithCode.Count() == 0)
+        if (CitiesInfo == null || CitiesInfo.Count() == 0)
             return;
 
-        string json = JsonSerializer.Serialize(CitiesWithCode, new JsonSerializerOptions { WriteIndented = true });
+        string json = JsonSerializer.Serialize(CitiesInfo, new JsonSerializerOptions { WriteIndented = true });
 
         File.WriteAllText(_filePath, json);
 
@@ -59,14 +72,67 @@ internal class CitiesService
         Console.WriteLine();
     }
 
-    public void AddNewCity(CityCodeResult cityResult)
+    public void AddNewCity(CityInfoResult cityResult)
     {
         LoadCities();
-        CitiesWithCode.Add(cityResult.Name, cityResult.Code);
+        CitiesInfo.Add(cityResult);
 
         Console.WriteLine("Cidade adicionada com sucesso");
         Console.WriteLine();
 
         SaveCitiesFile(); // garante persistência
+    }
+
+    public void Teste()
+    {
+        string html = File.ReadAllText("C:\\Users\\Usuario\\Documents\\codigosPib.txt"); // o arquivo que você me mandou
+
+        // Regex para capturar value e nome + UF
+        var pattern = @"<option value=""(\d+)"">([^<]+)</option>";
+        var matches = Regex.Matches(html, pattern);
+
+        var municipios = new Dictionary<string, int>();
+
+        foreach (Match match in matches)
+        {
+            string codigo = match.Groups[1].Value;
+            string nomeRaw = match.Groups[2].Value.Trim();
+
+            // Exemplo: "Entre Rios ( SC ) - 4205175" → "Entre Rios (SC)"
+            nomeRaw = Regex.Replace(nomeRaw, @"-?\s*\d+$", ""); // remove o código final
+            nomeRaw = Regex.Replace(nomeRaw, @"\s+", " "); // limpa múltiplos espaços
+            nomeRaw = nomeRaw.Replace(" ( ", " (").Replace(" )", ")"); // corrige parenteses
+
+            // Extrair UF entre parênteses
+            var ufMatch = Regex.Match(nomeRaw, @"\((.*?)\)");
+            string uf = ufMatch.Success ? ufMatch.Groups[1].Value.Trim().ToUpperInvariant() : "";
+
+            // Remover acentos e normalizar o nome
+            string nomeSemAcento = new string(
+                nomeRaw
+                    .Normalize(NormalizationForm.FormD)
+                    .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    .ToArray()
+            );
+
+            // Reconstruir o nome no formato "cidade (UF)"
+            // Remove o UF antigo para reinserir formatado
+            nomeSemAcento = Regex.Replace(nomeSemAcento, @"\(.*?\)", "").Trim();
+            string nomeFinal = $"{nomeSemAcento.ToLowerInvariant()} ({uf})";
+
+            municipios[nomeFinal] = int.Parse(codigo);
+        }
+
+        // Serializar em JSON formatado
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+        };
+
+        string json = JsonSerializer.Serialize(municipios, options);
+        File.WriteAllText("lista_codigos_pib.json", json, Encoding.UTF8);
+
+        Console.WriteLine("✅ JSON gerado com sucesso!");
     }
 }
