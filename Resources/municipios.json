@@ -1,83 +1,506 @@
-{
-  "cachoeiro de itapemirim": 1476,
-  "campo grande": 1660,
-  "coxim": 2383,
-  "nova alvorada do sul": 10009,
-  "paraiso das aguas": 11592,
-  "rio verde de mato grosso": 6705,
-  "sonora": 8041,
-  "camapua": 1577,
-  "bataguassu": 1010,
-  "porto dos gauchos": 6268,
-  "palmas": 9156,
-  "figueirao": 11587,
-  "porto velho": 6291,
-  "balsas": 841,
-  "abreu e lima": 120,
-  "jaboatao dos guararapes": 3998,
-  "anapolis": 433,
-  "caarapo": 1412,
-  "iturama": 3977,
-  "congonhas": 2248,
-  "curvelo": 2510,
-  "mariana": 4742,
-  "ouro preto": 5506,
-  "santana de parnaiba": 7111,
-  "camanducaia": 1576,
-  "iguatama": 3541,
-  "jeceaba": 4159,
-  "alfenas": 273,
-  "sete lagoas": 7953,
-  "nova lima": 5335,
-  "jequitiba": 4166,
-  "rio paranaiba": 6676,
-  "sao gotardo": 7366,
-  "machado": 4583,
-  "riacho dos machados": 6555,
-  "delfim moreira": 2528,
-  "sao jose da varginha": 7555,
-  "itapecerica": 3859,
-  "mateus leme": 4828,
-  "bom despacho": 1197,
-  "rio manso": 6661,
-  "mario campos": 11323,
-  "nova serrana": 5369,
-  "sao goncalo do rio abaixo": 7361,
-  "carandai": 1846,
-  "juatuba": 4252,
-  "barao de cocais": 871,
-  "santa barbara": 6872,
-  "itabira": 3741,
-  "bela vista de minas": 1047,
-  "sabara": 6784,
-  "santa luzia": 6973,
-  "pedro leopoldo": 5865,
-  "catas altas": 11291,
-  "governador valadares": 3192,
-  "esmeraldas": 2776,
-  "capitolio": 1812,
-  "ferros": 2934,
-  "ibitiura de minas": 3471,
-  "itatiaiucu": 3928,
-  "itumirim": 3972,
-  "juiz de fora": 4270,
-  "leopoldina": 4470,
-  "vespasiano": 8669,
-  "claudio": 2133,
-  "sao pedro do suacui": 7672,
-  "ilicinea": 3561,
-  "sao joaquim de bicas": 11360,
-  "brumadinho": 1374,
-  "berilo": 1096,
-  "caetanopolis": 1491,
-  "paraopeba": 5695,
-  "paracatu": 5645,
-  "joao pinheiro": 4205,
-  "unai": 8503,
-  "lagoa grande": 4370,
-  "guarda-mor": 3316,
-  "betim": 1107,
-  "araguari": 587,
-  "uberaba": 8472,
-  "tres marias": 8371
-}
+[
+  {
+    "Name": "cachoeiro de itapemirim",
+    "Uf": "ES",
+    "DafCode": 1476,
+    "PibCode": 3201209
+  },
+  {
+    "Name": "campo grande",
+    "Uf": "MS",
+    "DafCode": 1660,
+    "PibCode": 5002704
+  },
+  {
+    "Name": "coxim",
+    "Uf": "MS",
+    "DafCode": 2383,
+    "PibCode": 5003306
+  },
+  {
+    "Name": "nova alvorada do sul",
+    "Uf": "MS",
+    "DafCode": 10009,
+    "PibCode": 5006002
+  },
+  {
+    "Name": "paraiso das aguas",
+    "Uf": "MS",
+    "DafCode": 11592,
+    "PibCode": 5006275
+  },
+  {
+    "Name": "rio verde de mato grosso",
+    "Uf": "MS",
+    "DafCode": 6705,
+    "PibCode": 5007406
+  },
+  {
+    "Name": "sonora",
+    "Uf": "MS",
+    "DafCode": 8041,
+    "PibCode": 5007695
+  },
+  {
+    "Name": "camapua",
+    "Uf": "MS",
+    "DafCode": 1577,
+    "PibCode": 5002605
+  },
+  {
+    "Name": "bataguassu",
+    "Uf": "MS",
+    "DafCode": 1010,
+    "PibCode": 5001904
+  },
+  {
+    "Name": "porto dos gauchos",
+    "Uf": "MT",
+    "DafCode": 6268,
+    "PibCode": 5106823
+  },
+  {
+    "Name": "palmas",
+    "Uf": "TO",
+    "DafCode": 9156,
+    "PibCode": 1721000
+  },
+  {
+    "Name": "figueirao",
+    "Uf": "MS",
+    "DafCode": 11587,
+    "PibCode": 5007976
+  },
+  {
+    "Name": "porto velho",
+    "Uf": "RO",
+    "DafCode": 6291,
+    "PibCode": 1100205
+  },
+  {
+    "Name": "balsas",
+    "Uf": "MA",
+    "DafCode": 841,
+    "PibCode": 2101400
+  },
+  {
+    "Name": "abreu e lima",
+    "Uf": "PE",
+    "DafCode": 120,
+    "PibCode": 2600054
+  },
+  {
+    "Name": "jaboatao dos guararapes",
+    "Uf": "PE",
+    "DafCode": 3998,
+    "PibCode": 2607901
+  },
+  {
+    "Name": "anapolis",
+    "Uf": "GO",
+    "DafCode": 433,
+    "PibCode": 5201108
+  },
+  {
+    "Name": "caarapo",
+    "Uf": "MS",
+    "DafCode": 1412,
+    "PibCode": 5002407
+  },
+  {
+    "Name": "iturama",
+    "Uf": "MG",
+    "DafCode": 3977,
+    "PibCode": 3134400
+  },
+  {
+    "Name": "congonhas",
+    "Uf": "MG",
+    "DafCode": 2248,
+    "PibCode": 3118007
+  },
+  {
+    "Name": "curvelo",
+    "Uf": "MG",
+    "DafCode": 2510,
+    "PibCode": 3120904
+  },
+  {
+    "Name": "mariana",
+    "Uf": "MG",
+    "DafCode": 4742,
+    "PibCode": 3140001
+  },
+  {
+    "Name": "ouro preto",
+    "Uf": "MG",
+    "DafCode": 5506,
+    "PibCode": 3146107
+  },
+  {
+    "Name": "santana de parnaiba",
+    "Uf": "SP",
+    "DafCode": 7111,
+    "PibCode": 3547304
+  },
+  {
+    "Name": "camanducaia",
+    "Uf": "MG",
+    "DafCode": 1576,
+    "PibCode": 3110509
+  },
+  {
+    "Name": "iguatama",
+    "Uf": "MG",
+    "DafCode": 3541,
+    "PibCode": 3130309
+  },
+  {
+    "Name": "jeceaba",
+    "Uf": "MG",
+    "DafCode": 4159,
+    "PibCode": 3135407
+  },
+  {
+    "Name": "alfenas",
+    "Uf": "MG",
+    "DafCode": 273,
+    "PibCode": 3101607
+  },
+  {
+    "Name": "sete lagoas",
+    "Uf": "MG",
+    "DafCode": 7953,
+    "PibCode": 3167202
+  },
+  {
+    "Name": "nova lima",
+    "Uf": "MG",
+    "DafCode": 5335,
+    "PibCode": 3144805
+  },
+  {
+    "Name": "jequitiba",
+    "Uf": "MG",
+    "DafCode": 4166,
+    "PibCode": 3135704
+  },
+  {
+    "Name": "rio paranaiba",
+    "Uf": "MG",
+    "DafCode": 6676,
+    "PibCode": 3155504
+  },
+  {
+    "Name": "sao gotardo",
+    "Uf": "MG",
+    "DafCode": 7366,
+    "PibCode": 3162104
+  },
+  {
+    "Name": "machado",
+    "Uf": "MG",
+    "DafCode": 4583,
+    "PibCode": 3139003
+  },
+  {
+    "Name": "riacho dos machados",
+    "Uf": "MG",
+    "DafCode": 6555,
+    "PibCode": 3154507
+  },
+  {
+    "Name": "delfim moreira",
+    "Uf": "MG",
+    "DafCode": 2528,
+    "PibCode": 3121100
+  },
+  {
+    "Name": "sao jose da varginha",
+    "Uf": "MG",
+    "DafCode": 7555,
+    "PibCode": 3163102
+  },
+  {
+    "Name": "itapecerica",
+    "Uf": "MG",
+    "DafCode": 3859,
+    "PibCode": 3133501
+  },
+  {
+    "Name": "mateus leme",
+    "Uf": "MG",
+    "DafCode": 4828,
+    "PibCode": 3140704
+  },
+  {
+    "Name": "bom despacho",
+    "Uf": "MG",
+    "DafCode": 1197,
+    "PibCode": 3107406
+  },
+  {
+    "Name": "rio manso",
+    "Uf": "MG",
+    "DafCode": 6661,
+    "PibCode": 3155306
+  },
+  {
+    "Name": "mario campos",
+    "Uf": "MG",
+    "DafCode": 11323,
+    "PibCode": 3140159
+  },
+  {
+    "Name": "nova serrana",
+    "Uf": "MG",
+    "DafCode": 5369,
+    "PibCode": 3145208
+  },
+  {
+    "Name": "sao goncalo do rio abaixo",
+    "Uf": "MG",
+    "DafCode": 7361,
+    "PibCode": 3161908
+  },
+  {
+    "Name": "carandai",
+    "Uf": "MG",
+    "DafCode": 1846,
+    "PibCode": 3113206
+  },
+  {
+    "Name": "juatuba",
+    "Uf": "MG",
+    "DafCode": 4252,
+    "PibCode": 3136652
+  },
+  {
+    "Name": "barao de cocais",
+    "Uf": "MG",
+    "DafCode": 871,
+    "PibCode": 3105400
+  },
+  {
+    "Name": "santa barbara",
+    "Uf": "MG",
+    "DafCode": 6872,
+    "PibCode": 3157203
+  },
+  {
+    "Name": "itabira",
+    "Uf": "MG",
+    "DafCode": 3741,
+    "PibCode": 3131703
+  },
+  {
+    "Name": "bela vista de minas",
+    "Uf": "MG",
+    "DafCode": 1047,
+    "PibCode": 3106002
+  },
+  {
+    "Name": "sabara",
+    "Uf": "MG",
+    "DafCode": 6784,
+    "PibCode": 3156700
+  },
+  {
+    "Name": "santa luzia",
+    "Uf": "MG",
+    "DafCode": 6973,
+    "PibCode": 3157807
+  },
+  {
+    "Name": "pedro leopoldo",
+    "Uf": "MG",
+    "DafCode": 5865,
+    "PibCode": 3149309
+  },
+  {
+    "Name": "catas altas",
+    "Uf": "MG",
+    "DafCode": 11291,
+    "PibCode": 3115359
+  },
+  {
+    "Name": "governador valadares",
+    "Uf": "MG",
+    "DafCode": 3192,
+    "PibCode": 3127701
+  },
+  {
+    "Name": "esmeraldas",
+    "Uf": "MG",
+    "DafCode": 2776,
+    "PibCode": 3124104
+  },
+  {
+    "Name": "capitolio",
+    "Uf": "MG",
+    "DafCode": 1812,
+    "PibCode": 3112802
+  },
+  {
+    "Name": "ferros",
+    "Uf": "MG",
+    "DafCode": 2934,
+    "PibCode": 3125903
+  },
+  {
+    "Name": "ibitiura de minas",
+    "Uf": "MG",
+    "DafCode": 3471,
+    "PibCode": 3129905
+  },
+  {
+    "Name": "itatiaiucu",
+    "Uf": "MG",
+    "DafCode": 3928,
+    "PibCode": 3133709
+  },
+  {
+    "Name": "itumirim",
+    "Uf": "MG",
+    "DafCode": 3972,
+    "PibCode": 3134301
+  },
+  {
+    "Name": "juiz de fora",
+    "Uf": "MG",
+    "DafCode": 4270,
+    "PibCode": 3136702
+  },
+  {
+    "Name": "leopoldina",
+    "Uf": "MG",
+    "DafCode": 4470,
+    "PibCode": 3138401
+  },
+  {
+    "Name": "vespasiano",
+    "Uf": "MG",
+    "DafCode": 8669,
+    "PibCode": 3171204
+  },
+  {
+    "Name": "claudio",
+    "Uf": "MG",
+    "DafCode": 2133,
+    "PibCode": 3116605
+  },
+  {
+    "Name": "sao pedro do suacui",
+    "Uf": "MG",
+    "DafCode": 7672,
+    "PibCode": 3164100
+  },
+  {
+    "Name": "ilicinea",
+    "Uf": "MG",
+    "DafCode": 3561,
+    "PibCode": 3130507
+  },
+  {
+    "Name": "sao joaquim de bicas",
+    "Uf": "MG",
+    "DafCode": 11360,
+    "PibCode": 3162922
+  },
+  {
+    "Name": "brumadinho",
+    "Uf": "MG",
+    "DafCode": 1374,
+    "PibCode": 3109006
+  },
+  {
+    "Name": "berilo",
+    "Uf": "MG",
+    "DafCode": 1096,
+    "PibCode": 3106507
+  },
+  {
+    "Name": "caetanopolis",
+    "Uf": "MG",
+    "DafCode": 1491,
+    "PibCode": 3109907
+  },
+  {
+    "Name": "paraopeba",
+    "Uf": "MG",
+    "DafCode": 5695,
+    "PibCode": 3147402
+  },
+  {
+    "Name": "paracatu",
+    "Uf": "MG",
+    "DafCode": 5645,
+    "PibCode": 3147006
+  },
+  {
+    "Name": "joao pinheiro",
+    "Uf": "MG",
+    "DafCode": 4205,
+    "PibCode": 3136306
+  },
+  {
+    "Name": "unai",
+    "Uf": "MG",
+    "DafCode": 8503,
+    "PibCode": 3170404
+  },
+  {
+    "Name": "lagoa grande",
+    "Uf": "MG",
+    "DafCode": 4370,
+    "PibCode": 3137536
+  },
+  {
+    "Name": "guarda-mor",
+    "Uf": "MG",
+    "DafCode": 3316,
+    "PibCode": 3128600
+  },
+  {
+    "Name": "betim",
+    "Uf": "MG",
+    "DafCode": 1107,
+    "PibCode": 3106705
+  },
+  {
+    "Name": "araguari",
+    "Uf": "MG",
+    "DafCode": 587,
+    "PibCode": 3103504
+  },
+  {
+    "Name": "uberaba",
+    "Uf": "MG",
+    "DafCode": 8472,
+    "PibCode": 3170107
+  },
+  {
+    "Name": "belo horizonte",
+    "Uf": "MG",
+    "DafCode": 1071,
+    "PibCode": 3106200
+  },
+  {
+    "Name": "sao goncalo do para",
+    "Uf": "MG",
+    "DafCode": 7359,
+    "PibCode": 3161809
+  },
+  {
+    "Name": "tres marias",
+    "Uf": "MG",
+    "DafCode": 8371,
+    "PibCode": 3169356
+  },
+  {
+    "Name": "presidente kennedy",
+    "Uf": "ES",
+    "DafCode": 6361,
+    "PibCode": 3204302
+  }
+]
