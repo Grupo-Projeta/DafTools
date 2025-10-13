@@ -85,6 +85,19 @@ namespace DafTools.Services
 
         public async Task RequestPibData()
         {
+
+            PathUtils pathUtils = new PathUtils();
+
+            Task.Delay(1000).Wait();
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine("Selecione a pasta onde os dados das cidades serão gerados:");
+            Console.WriteLine();
+            Console.WriteLine("Pressione qualquer tecla para abrir a seleção");
+            Console.ReadKey();
+
+            string targetPath = pathUtils.GetPathByInput();
+
             var citiesDialog = new CitiesService();
             var citiesInfo = citiesDialog.LoadCities();
 
@@ -157,7 +170,7 @@ namespace DafTools.Services
             string json = JsonSerializer.Serialize(finalJson, options);
 
             // Salvar em arquivo
-            string path = "indicaroes_pib.json";
+            string path = Path.Combine(targetPath, "indicadores_pib.json");
             await File.WriteAllTextAsync(path, json, Encoding.UTF8);
 
             Console.WriteLine("Indicadores salvos com sucesso");
@@ -193,7 +206,7 @@ namespace DafTools.Services
                     string uf = contentItem.GetProperty("siglaUnidadeFederacaoSaida").GetString() ?? string.Empty;
                     int dafCode = contentItem.GetProperty("codigoBeneficiarioSaida").GetInt32();
 
-                    returnedCities.Add(new CityInfoResult(name.ToLower(), uf.ToUpper(), dafCode, 0000));
+                    returnedCities.Add(new CityInfoResult(name.ToLower(), uf.ToUpper(), dafCode));
                 }
 
                 int maxTentativas = 5;
@@ -249,6 +262,25 @@ namespace DafTools.Services
             return null;
         }
 
+        public int RequestCityPibCode(CityInfoResult cityInfo)
+        {
+            string filePath = "Resources/lista_codigos_pib.json";
+
+            Dictionary<string, int> citiesCodeDic = new Dictionary<string, int>();
+
+            var json = File.ReadAllText(filePath);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var citiesPibCodes = JsonSerializer.Deserialize<Dictionary<string, int>>(json, options);
+
+            int cityPibCode = citiesPibCodes.FirstOrDefault(c => c.Key == $"{cityInfo.Name} ({cityInfo.Uf})").Value;
+
+            return cityPibCode;
+
+        }
 
     }
 }

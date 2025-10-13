@@ -34,8 +34,6 @@ namespace DafTools
                 Console.WriteLine("5 - Adicionar Municipio à base interna");
                 Console.WriteLine("6 - Listar Municipios da base interna");
 
-                Console.WriteLine("7 - TESTE");
-
                 Console.WriteLine();
                 Console.Write("Digite uma opção: ");
 
@@ -73,9 +71,6 @@ namespace DafTools
 
                         case 6: _citiesService.ListAllCities();
                                 break;
-
-                        case 7: _citiesService.Teste();
-                                break;
                      }
                     
                     Task.Delay(1000).Wait();
@@ -101,6 +96,8 @@ namespace DafTools
             CityInfoResult? requestResult = await _requestService.RequestCityDafCode(inputName);
 
             if (requestResult == null) return;
+
+            requestResult.PibCode = _requestService.RequestCityPibCode(requestResult);
 
             _citiesService.AddNewCity(requestResult);
         }

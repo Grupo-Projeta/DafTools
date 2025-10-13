@@ -149,7 +149,7 @@ namespace DafTools.Services
             Console.ReadKey();
 
 
-            string exportPath = Path.Combine(_pathContext.GetPathByInput(), $"{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}_relatorio_consolidado.csv");
+            string exportPath = Path.Combine(_pathContext.GetPathByInput(), $"{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}_consolidado_daf.csv");
             try
             {
                 using (var sw = new StreamWriter(exportPath, false, Encoding.UTF8))
@@ -181,9 +181,17 @@ namespace DafTools.Services
             IList<PibCsvScheme> pibSchemes = new List<PibCsvScheme>();
 
 
-            var pibsFile = Path.GetFileName("C:\\Users\\Usuario\\source\\repos\\DafTools\\bin\\Debug\\net8.0-windows\\indicaroes_pib.json");
+            Task.Delay(1000).Wait();
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine("Selecione a pasta onde está o arquivo do PIB:");
+            Console.WriteLine();
+            Console.WriteLine("Pressione qualquer tecla para abrir a seleção");
+            Console.ReadKey();
 
-            string json = File.ReadAllText(pibsFile);
+            string DataPath = _pathContext.GetPathByInput();
+
+            string json = File.ReadAllText(Path.Combine(DataPath, "indicadores_pib.json"));
 
             var options = new JsonSerializerOptions
             {
@@ -241,7 +249,7 @@ namespace DafTools.Services
             Console.ReadKey();
 
 
-            string exportPath = Path.Combine(_pathContext.GetPathByInput(), $"{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}_relatorio_consolidado.csv");
+            string exportPath = Path.Combine(_pathContext.GetPathByInput(), $"{DateTime.Now.Month}-{DateTime.Now.Day}-{DateTime.Now.Hour}-{DateTime.Now.Minute}_consolidado_pib.csv");
             try
             {
                 using (var sw = new StreamWriter(exportPath, false, Encoding.UTF8))
@@ -257,7 +265,6 @@ namespace DafTools.Services
                 Console.WriteLine();
                 Console.WriteLine($"Relatório consolidado salvo em {exportPath}");
                 Console.WriteLine();
-
             }
             catch (Exception ex)
             {
@@ -266,7 +273,6 @@ namespace DafTools.Services
                 Console.WriteLine();
                 Console.WriteLine(ex.Message);
             }
-
         }
     }
 }
